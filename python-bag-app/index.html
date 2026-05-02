@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STRAPS — Bag Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:      #0e0c0a;
+      --surface: #181512;
+      --card:    #1e1a16;
+      --border:  #2e2820;
+      --accent:  #d4a85a;
+      --accent2: #e8c07a;
+      --text:    #e8e0d4;
+      --muted:   #7a6f62;
+      --light:   #f5efe6;
+      --danger:  #b05555;
+      --success: #5a8c6a;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(14,12,10,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem; height: 64px;
+    }
+    .brand { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; cursor: pointer; }
+    .brand span { color: var(--text); font-style: italic; font-weight: 400; }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-link { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); cursor: pointer; transition: color 0.2s; border: none; background: none; }
+    .nav-link:hover { color: var(--accent); }
+    .cart-btn {
+      background: var(--accent); color: var(--bg);
+      border: none; padding: 0.5rem 1.2rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;
+      border-radius: 2px; transition: background 0.2s; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .cart-btn:hover { background: var(--accent2); }
+    .cart-count { background: var(--bg); color: var(--accent); border-radius: 50%; width: 18px; height: 18px; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+    /* ── PAGES ── */
+    .page { display: none; animation: fadeIn 0.3s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 480px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 5rem 2rem;
+      background: radial-gradient(ellipse at 50% 60%, #2a1f0e 0%, var(--bg) 70%);
+      position: relative; overflow: hidden;
+    }
+    .hero::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(212,168,90,0.04) 40px); pointer-events: none; }
+    .hero-tag { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 400; color: var(--light); line-height: 1.08; margin-bottom: 1.25rem; }
+    .hero h1 em { color: var(--accent); }
+    .hero p { color: var(--muted); font-size: 0.9rem; max-width: 400px; line-height: 1.9; margin-bottom: 2.5rem; }
+    .hero-cta { background: transparent; border: 1.5px solid var(--accent); color: var(--accent); padding: 0.85rem 2.5rem; font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: all 0.25s; }
+    .hero-cta:hover { background: var(--accent); color: var(--bg); }
+
+    /* ── SHOP ── */
+    .shop-wrap { max-width: 1280px; margin: 0 auto; padding: 3rem 2rem; }
+    .filters { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    .search-box { flex: 1; min-width: 220px; position: relative; }
+    .search-box input {
+      width: 100%; padding: 0.65rem 1rem 0.65rem 2.5rem;
+      background: var(--surface); border: 1.5px solid var(--border); color: var(--text);
+      font-family: 'DM Sans', sans-serif; font-size: 0.85rem; outline: none; border-radius: 3px;
+      transition: border 0.2s;
+    }
+    .search-box input::placeholder { color: var(--muted); }
+    .search-box input:focus { border-color: var(--accent); }
+    .search-box::before { content: '🔍'; position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); font-size: 0.75rem; pointer-events: none; }
+    .cat-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .pill { padding: 0.45rem 1rem; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; border: 1.5px solid var(--border); color: var(--muted); background: transparent; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
+    .pill:hover, .pill.active { border-color: var(--accent); color: var(--accent); background: rgba(212,168,90,0.08); }
+
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden;
+      cursor: pointer; transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+    .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+    .card-img { width: 100%; aspect-ratio: 5/4; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 5rem; border-bottom: 1px solid var(--border); transition: background 0.2s; }
+    .card:hover .card-img { background: #221d15; }
+    .card-body { padding: 1.2rem 1.3rem 1.4rem; }
+    .card-cat { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; }
+    .card-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--light); margin-bottom: 0.5rem; }
+    .card-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; }
+    .card-price { font-size: 1.1rem; font-weight: 600; color: var(--accent2); }
+    .add-btn { background: var(--accent); color: var(--bg); border: none; padding: 0.5rem 1rem; font-family: 'DM Sans', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: background 0.2s; }
+    .add-btn:hover { background: var(--accent2); }
+    .stock-dot { font-size: 0.65rem; color: var(--success); font-weight: 500; }
+    .no-results { text-align: center; padding: 5rem 2rem; color: var(--muted); }
+    .no-results h3 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; margin-bottom: 0.5rem; color: var(--text); }
+
+    /* ── PRODUCT DETAIL ── */
+    .detail-wrap { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; display: grid; grid-template-columns: 1.1fr 1fr; gap: 5rem; }
+    .detail-img { aspect-ratio: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12rem; }
+    .detail-info { padding-top: 0.5rem; }
+    .back-btn { background: none; border: none; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
+    .back-btn:hover { color: var(--accent); }
+    .detail-cat { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+    .detail-name { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 400; color: var(--light); line-height: 1.1; margin-bottom: 1rem; }
+    .detail-price { font-size: 2rem; font-weight: 300; color: var(--accent2); margin-bottom: 1.5rem; }
+    .detail-divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+    .detail-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.95; margin-bottom: 1.5rem; }
+    .detail-stock { font-size: 0.75rem; color: var(--success); font-weight: 500; margin-bottom: 1.5rem; }
+    .qty-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .qty-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+    .qty-ctrl { display: flex; align-items: center; gap: 0; border: 1.5px solid var(--border); border-radius: 3px; overflow: hidden; }
+    .qty-ctrl button { background: var(--surface); color: var(--text); border: none; width: 36px; height: 36px; font-size: 1rem; cursor: pointer; transition: background 0.15s; }
+    .qty-ctrl button:hover { background: var(--border); }
+    .qty-ctrl span { width: 42px; text-align: center; font-size: 0.9rem; font-weight: 500; color: var(--light); }
+    .detail-add { width: 100%; padding: 1rem; background: var(--accent); color: var(--bg); border: none; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: background 0.2s; margin-bottom: 0.75rem; }
+    .detail-add:hover { background: var(--accent2); }
+    .detail-cart-link { width: 100%; padding: 0.85rem; background: transparent; color: var(--accent); border: 1.5px solid var(--accent); font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: all 0.2s; }
+    .detail-cart-link:hover { background: rgba(212,168,90,0.1); }
+
+    /* ── CART ── */
+    .cart-wrap { max-width: 920px; margin: 4rem auto; padding: 0 2rem; }
+    .page-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400; color: var(--light); margin-bottom: 2.5rem; }
+    .cart-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+    .cart-table thead th { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); padding-bottom: 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+    .cart-table tbody tr { border-bottom: 1px solid var(--border); }
+    .cart-table td { padding: 1.25rem 0; font-size: 0.88rem; vertical-align: middle; }
+    .cart-item-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--light); }
+    .cart-item-cat { font-size: 0.6rem; color: var(--accent); font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+    .cart-qty-ctrl { display: flex; align-items: center; gap: 0; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; width: fit-content; }
+    .cart-qty-ctrl button { background: var(--surface); color: var(--text); border: none; width: 30px; height: 30px; font-size: 0.9rem; cursor: pointer; }
+    .cart-qty-ctrl button:hover { background: var(--border); }
+    .cart-qty-ctrl span { width: 34px; text-align: center; font-size: 0.82rem; }
+    .cart-remove { background: none; border: none; color: var(--muted); font-size: 1rem; cursor: pointer; transition: color 0.2s; }
+    .cart-remove:hover { color: var(--danger); }
+    .cart-summary { display: flex; justify-content: flex-end; gap: 1.5rem; align-items: center; flex-wrap: wrap; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .cart-total { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--accent2); }
+    .cart-total span { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-right: 0.75rem; }
+    .btn-checkout { background: var(--accent); color: var(--bg); border: none; padding: 0.85rem 2.5rem; font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: background 0.2s; }
+    .btn-checkout:hover { background: var(--accent2); }
+    .empty-cart { text-align: center; padding: 6rem 2rem; }
+    .empty-cart h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 1rem; color: var(--text); }
+    .empty-cart p { color: var(--muted); margin-bottom: 2rem; font-size: 0.88rem; }
+    .btn-shop { background: var(--accent); color: var(--bg); border: none; padding: 0.85rem 2.5rem; font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: background 0.2s; }
+    .btn-shop:hover { background: var(--accent2); }
+
+    /* ── CHECKOUT ── */
+    .checkout-wrap { max-width: 960px; margin: 4rem auto; padding: 0 2rem; display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.45rem; }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 0.7rem 1rem; background: var(--surface); border: 1.5px solid var(--border);
+      color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; outline: none; border-radius: 3px; transition: border 0.2s;
+    }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--muted); }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .order-box { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; position: sticky; top: 80px; }
+    .order-box h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 400; color: var(--light); margin-bottom: 1.5rem; }
+    .order-line { display: flex; justify-content: space-between; font-size: 0.82rem; padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+    .order-line:last-of-type { border-bottom: none; }
+    .order-line-name { color: var(--muted); }
+    .order-line-price { color: var(--text); font-weight: 500; }
+    .order-grand { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid rgba(212,168,90,0.3); margin-top: 0.5rem; }
+    .order-grand span:first-child { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+    .order-grand span:last-child { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--accent); }
+    .btn-place { width: 100%; padding: 1rem; background: var(--accent); color: var(--bg); border: none; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: background 0.2s; margin-top: 1.5rem; }
+    .btn-place:hover { background: var(--accent2); }
+
+    /* ── SUCCESS ── */
+    .success-wrap { max-width: 600px; margin: 7rem auto; padding: 0 2rem; text-align: center; }
+    .success-icon { font-size: 4rem; margin-bottom: 1.5rem; }
+    .success-wrap h1 { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 400; color: var(--light); margin-bottom: 1rem; }
+    .success-wrap p { color: var(--muted); font-size: 0.88rem; line-height: 1.9; margin-bottom: 0.5rem; }
+    .success-box { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; margin: 2rem 0; text-align: left; }
+    .success-line { display: flex; justify-content: space-between; font-size: 0.82rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); color: var(--muted); }
+    .success-line:last-child { border-bottom: none; font-weight: 600; color: var(--accent); font-size: 1rem; }
+
+    /* ── TOAST ── */
+    .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--surface); border: 1px solid var(--accent); color: var(--text); padding: 0.9rem 1.5rem; border-radius: 4px; font-size: 0.82rem; font-weight: 500; z-index: 999; opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; max-width: 300px; }
+    .toast.show { opacity: 1; transform: none; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--surface); border-top: 1px solid var(--border); text-align: center; padding: 2rem; color: var(--muted); font-size: 0.72rem; letter-spacing: 0.12em; margin-top: 5rem; }
+    footer span { color: var(--accent); }
+
+    @media(max-width:700px){
+      .detail-wrap, .checkout-wrap { grid-template-columns: 1fr; gap: 2rem; }
+      .detail-img { font-size: 7rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="brand" onclick="showPage('home')">STRAPS <span>& Co.</span></div>
+  <div class="nav-right">
+    <button class="nav-link" onclick="showPage('home')">Shop</button>
+    <button class="cart-btn" onclick="showPage('cart')">
+      🛍 Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ════════════════════ HOME PAGE ════════════════════ -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <p class="hero-tag">New Arrivals 2024</p>
+    <h1>Carry Your<br>World in <em>Style</em></h1>
+    <p>Curated bags for every occasion — from boardrooms to beaches, crafted to last.</p>
+    <button class="hero-cta" onclick="document.querySelector('.shop-wrap').scrollIntoView({behavior:'smooth'})">Explore Collection</button>
+  </div>
+
+  <div class="shop-wrap">
+    <div class="filters">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search bags…" oninput="renderProducts()">
+      </div>
+      <div class="cat-pills" id="catPills"></div>
+    </div>
+    <div class="products-grid" id="productsGrid"></div>
+  </div>
+</div>
+
+<!-- ════════════════════ PRODUCT DETAIL ════════════════════ -->
+<div id="page-detail" class="page">
+  <div style="max-width:1100px;margin:0 auto;padding:2rem 2rem 0;">
+    <button class="back-btn" onclick="showPage('home')">← Back to Shop</button>
+  </div>
+  <div class="detail-wrap" id="detailContent"></div>
+</div>
+
+<!-- ════════════════════ CART PAGE ════════════════════ -->
+<div id="page-cart" class="page">
+  <div class="cart-wrap">
+    <h1 class="page-title">Shopping Cart</h1>
+    <div id="cartContent"></div>
+  </div>
+</div>
+
+<!-- ════════════════════ CHECKOUT PAGE ════════════════════ -->
+<div id="page-checkout" class="page">
+  <div class="checkout-wrap">
+    <div>
+      <h1 class="page-title">Checkout</h1>
+      <div class="form-group"><label>Full Name</label><input type="text" id="chkName" placeholder="Jane Doe"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="chkEmail" placeholder="jane@email.com"></div>
+      <div class="form-group"><label>Delivery Address</label><textarea id="chkAddr" rows="3" placeholder="123 Main Street, City, PIN" style="resize:vertical;"></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242" maxlength="19"></div>
+        <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY" maxlength="5"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>CVV</label><input type="text" placeholder="123" maxlength="3"></div>
+        <div class="form-group"><label>Name on Card</label><input type="text" placeholder="Jane Doe"></div>
+      </div>
+      <button class="btn-place" onclick="placeOrder()">Place Order</button>
+    </div>
+    <div>
+      <div class="order-box" id="checkoutSummary"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ SUCCESS PAGE ════════════════════ -->
+<div id="page-success" class="page">
+  <div class="success-wrap" id="successContent"></div>
+</div>
+
+<footer>&copy; 2024 <span>STRAPS & Co.</span> — All bags, all occasions</footer>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const PRODUCTS = [
+  { id:1, name:"Le Monaco Tote",      category:"Tote",     price:129.99, stock:15, emoji:"👜", desc:"Structured vegan leather tote with brushed gold hardware and interior zip pocket." },
+  { id:2, name:"Urban Sling Pro",     category:"Sling",    price:79.99,  stock:22, emoji:"🎒", desc:"Minimalist crossbody sling with adjustable strap and anti-scratch lining." },
+  { id:3, name:"Riviera Clutch",      category:"Clutch",   price:59.99,  stock:18, emoji:"👛", desc:"Slim suede-effect envelope clutch with magnetic snap closure." },
+  { id:4, name:"Nomad Backpack",      category:"Backpack", price:159.99, stock:10, emoji:"🎒", desc:"Water-resistant canvas backpack with padded laptop sleeve and hidden pocket." },
+  { id:5, name:"Parisienne Shoulder", category:"Shoulder", price:109.99, stock:8,  emoji:"👝", desc:"Chain-strap shoulder bag in croc-embossed vegan leather. Iconic silhouette." },
+  { id:6, name:"Capri Mini Bag",      category:"Mini",     price:49.99,  stock:30, emoji:"💼", desc:"Micro statement bag with detachable chain strap — bold and effortless." },
+  { id:7, name:"Sahara Bucket Bag",   category:"Bucket",   price:89.99,  stock:14, emoji:"🪣", desc:"Drawstring bucket bag in pebbled vegan leather with contrast stitching." },
+  { id:8, name:"Voyage Weekender",    category:"Travel",   price:189.99, stock:6,  emoji:"🧳", desc:"Spacious overnight duffel with reinforced base, shoe compartment & trolley strap." },
+  { id:9, name:"Soho Crossbody",      category:"Shoulder", price:94.99,  stock:12, emoji:"👜", desc:"Compact crossbody with multiple card slots and magnetic flap closure." },
+  { id:10,name:"Harlow Clutch Wallet",category:"Clutch",   price:39.99,  stock:25, emoji:"👛", desc:"Slim bifold clutch-wallet hybrid in smooth vegan leather." },
+  { id:11,name:"Summit Day Pack",     category:"Backpack", price:134.99, stock:9,  emoji:"🎒", desc:"Lightweight 18L day pack with breathable back panel and rain cover." },
+  { id:12,name:"Tokyo Tote Mini",     category:"Tote",     price:74.99,  stock:20, emoji:"👜", desc:"Compact tote for everyday essentials — fits A4 docs and 11\" tablet easily." },
+];
+
+let cart = {};           // { productId: qty }
+let selectedCat = "All";
+let currentProduct = null;
+let orderCounter = 1001;
+
+// ── PAGES ─────────────────────────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+  if (name === 'home') renderProducts();
+  if (name === 'cart') renderCart();
+  if (name === 'checkout') renderCheckoutSummary();
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── CART ─────────────────────────────────────────────────────────────────────
+function cartTotal() {
+  return Object.entries(cart).reduce((sum, [id, qty]) => {
+    const p = PRODUCTS.find(x => x.id === +id);
+    return sum + (p ? p.price * qty : 0);
+  }, 0);
+}
+function cartCount() { return Object.values(cart).reduce((s, q) => s + q, 0); }
+function updateCartBadge() { document.getElementById('cartCount').textContent = cartCount(); }
+
+function addToCart(id, qty = 1) {
+  const key = String(id);
+  cart[key] = (cart[key] || 0) + qty;
+  updateCartBadge();
+  toast('Added to cart! 🛍');
+}
+function removeFromCart(id) { delete cart[String(id)]; renderCart(); updateCartBadge(); }
+function changeQty(id, delta) {
+  const key = String(id);
+  cart[key] = Math.max(0, (cart[key] || 0) + delta);
+  if (cart[key] === 0) delete cart[key];
+  renderCart(); updateCartBadge();
+}
+
+// ── RENDER PRODUCTS ───────────────────────────────────────────────────────────
+function renderCatPills() {
+  const cats = ["All", ...new Set(PRODUCTS.map(p => p.category))];
+  document.getElementById('catPills').innerHTML = cats.map(c => `
+    <button class="pill ${c === selectedCat ? 'active' : ''}" onclick="selectCat('${c}')">${c}</button>
+  `).join('');
+}
+function selectCat(cat) { selectedCat = cat; renderCatPills(); renderProducts(); }
+
+function renderProducts() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  let list = PRODUCTS;
+  if (selectedCat !== 'All') list = list.filter(p => p.category === selectedCat);
+  if (q) list = list.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+
+  const grid = document.getElementById('productsGrid');
+  if (!list.length) {
+    grid.innerHTML = `<div class="no-results" style="grid-column:1/-1"><h3>No bags found</h3><p style="color:var(--muted);margin-top:0.5rem;">Try a different search or category.</p></div>`;
+    return;
+  }
+  grid.innerHTML = list.map(p => `
+    <div class="card" onclick="openDetail(${p.id})">
+      <div class="card-img">${p.emoji}</div>
+      <div class="card-body">
+        <div class="card-cat">${p.category}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-desc">${p.desc}</div>
+        <div class="card-footer">
+          <div class="card-price">$${p.price.toFixed(2)}</div>
+          <button class="add-btn" onclick="event.stopPropagation();addToCart(${p.id})">+ Cart</button>
+        </div>
+        <div class="stock-dot" style="margin-top:0.6rem;">✓ ${p.stock} in stock</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── PRODUCT DETAIL ────────────────────────────────────────────────────────────
+function openDetail(id) {
+  currentProduct = PRODUCTS.find(p => p.id === id);
+  if (!currentProduct) return;
+  document.getElementById('detailContent').innerHTML = `
+    <div class="detail-img">${currentProduct.emoji}</div>
+    <div class="detail-info">
+      <div class="detail-cat">${currentProduct.category}</div>
+      <h1 class="detail-name">${currentProduct.name}</h1>
+      <div class="detail-price">$${currentProduct.price.toFixed(2)}</div>
+      <div class="detail-divider"></div>
+      <p class="detail-desc">${currentProduct.desc}</p>
+      <p class="detail-stock">✓ ${currentProduct.stock} in stock — ready to ship</p>
+      <div class="qty-row">
+        <span class="qty-label">Qty</span>
+        <div class="qty-ctrl">
+          <button onclick="changeDetailQty(-1)">−</button>
+          <span id="detailQty">1</span>
+          <button onclick="changeDetailQty(1)">+</button>
+        </div>
+      </div>
+      <button class="detail-add" onclick="addDetailToCart()">Add to Cart</button>
+      <button class="detail-cart-link" onclick="showPage('cart')">View Cart</button>
+    </div>
+  `;
+  showPage('detail');
+}
+function changeDetailQty(d) {
+  const el = document.getElementById('detailQty');
+  el.textContent = Math.max(1, Math.min(currentProduct.stock, +el.textContent + d));
+}
+function addDetailToCart() {
+  const qty = +document.getElementById('detailQty').textContent;
+  addToCart(currentProduct.id, qty);
+}
+
+// ── RENDER CART ───────────────────────────────────────────────────────────────
+function renderCart() {
+  const content = document.getElementById('cartContent');
+  const keys = Object.keys(cart);
+  if (!keys.length) {
+    content.innerHTML = `
+      <div class="empty-cart">
+        <div style="font-size:4rem;margin-bottom:1rem;">🛍</div>
+        <h2>Your cart is empty</h2>
+        <p>Looks like you haven't picked anything yet.</p>
+        <button class="btn-shop" onclick="showPage('home')">Continue Shopping</button>
+      </div>`;
+    return;
+  }
+  const rows = keys.map(k => {
+    const p = PRODUCTS.find(x => x.id === +k);
+    if (!p) return '';
+    const sub = (p.price * cart[k]).toFixed(2);
+    return `<tr>
+      <td>
+        <div class="cart-item-cat">${p.category}</div>
+        <div class="cart-item-name">${p.name}</div>
+      </td>
+      <td>$${p.price.toFixed(2)}</td>
+      <td>
+        <div class="cart-qty-ctrl">
+          <button onclick="changeQty(${p.id},-1)">−</button>
+          <span>${cart[k]}</span>
+          <button onclick="changeQty(${p.id},1)">+</button>
+        </div>
+      </td>
+      <td>$${sub}</td>
+      <td><button class="cart-remove" onclick="removeFromCart(${p.id})" title="Remove">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  content.innerHTML = `
+    <table class="cart-table">
+      <thead><tr><th>Item</th><th>Price</th><th>Qty</th><th>Subtotal</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="cart-summary">
+      <button class="nav-link" onclick="showPage('home')" style="color:var(--muted);">← Continue Shopping</button>
+      <div class="cart-total"><span>Total</span>$${cartTotal().toFixed(2)}</div>
+      <button class="btn-checkout" onclick="showPage('checkout')">Checkout →</button>
+    </div>`;
+}
+
+// ── CHECKOUT ──────────────────────────────────────────────────────────────────
+function renderCheckoutSummary() {
+  const keys = Object.keys(cart);
+  const lines = keys.map(k => {
+    const p = PRODUCTS.find(x => x.id === +k);
+    if (!p) return '';
+    return `<div class="order-line">
+      <span class="order-line-name">${p.name} × ${cart[k]}</span>
+      <span class="order-line-price">$${(p.price * cart[k]).toFixed(2)}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('checkoutSummary').innerHTML = `
+    <h3>Order Summary</h3>
+    ${lines}
+    <div class="order-grand">
+      <span>Total</span>
+      <span>$${cartTotal().toFixed(2)}</span>
+    </div>`;
+}
+
+function placeOrder() {
+  const name  = document.getElementById('chkName').value.trim();
+  const email = document.getElementById('chkEmail').value.trim();
+  const addr  = document.getElementById('chkAddr').value.trim();
+  if (!name || !email || !addr) { toast('Please fill in all required fields.'); return; }
+
+  const orderId = orderCounter++;
+  const total = cartTotal().toFixed(2);
+  const items = Object.keys(cart).map(k => {
+    const p = PRODUCTS.find(x => x.id === +k);
+    return `<div class="success-line"><span>${p.name} × ${cart[k]}</span><span>$${(p.price * cart[k]).toFixed(2)}</span></div>`;
+  }).join('');
+
+  document.getElementById('successContent').innerHTML = `
+    <div class="success-icon">🎉</div>
+    <h1>Order Confirmed!</h1>
+    <p>Thank you, <strong>${name}</strong>! Your order <strong>#${orderId}</strong> has been placed.</p>
+    <p style="margin-bottom:0;">A confirmation will be sent to <strong>${email}</strong>.</p>
+    <div class="success-box">
+      ${items}
+      <div class="success-line"><span>Grand Total</span><span>$${total}</span></div>
+    </div>
+    <button class="btn-shop" onclick="showPage('home')">Continue Shopping</button>
+  `;
+
+  cart = {};
+  updateCartBadge();
+  showPage('success');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+renderCatPills();
+renderProducts();
+</script>
+</body>
+</html>
