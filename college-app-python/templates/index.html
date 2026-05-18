@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+            }
+
+            .hero-text h1 {
+                font-size: 38px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="hero">
+        <div class="hero-text">
+            <h1>College Fee Management</h1>
+            <p>
+                Easily manage student fee records, track payments,
+                and maintain financial transparency with a beautiful modern dashboard.
+            </p>
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1200&auto=format&fit=crop" alt="College Students">
+    </div>
+
+    <div class="card">
+        <h2>Add Student Fee Details</h2>
+
+        <form method="POST">
+            <input type="text" name="name" placeholder="Student Name" required>
+            <input type="text" name="course" placeholder="Course" required>
+            <input type="number" name="fee_paid" placeholder="Fee Paid" required>
+            <input type="number" name="total_fee" placeholder="Total Fee" required>
+            <button type="submit">Add Student</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Student Fee Records</h2>
+
+        <div class="student-grid">
+
+            {% for student in students %}
+
+            <div class="student-card">
+                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop" alt="Student">
+
+                <div class="student-info">
+                    <h3>{{ student.name }}</h3>
+                    <p><strong>Course:</strong> {{ student.course }}</p>
+                    <p><strong>Paid:</strong> ₹{{ student.fee_paid }}</p>
+                    <p><strong>Total:</strong> ₹{{ student.total_fee }}</p>
+
+                    {% set percentage = (student.fee_paid / student.total_fee) * 100 %}
+
+                    <div class="progress-bar">
+                        <div class="progress" style="width: {{ percentage }}%"></div>
+                    </div>
+
+                    <p style="margin-top:10px; color:#444;">
+                        {{ percentage|round(1) }}% Fee Paid
+                    </p>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
