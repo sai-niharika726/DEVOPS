@@ -10,7 +10,7 @@ def home():
     return f"""
     <html>
         <head>
-            <title>Company App</title>
+            <title>Company App-1</title>
         </head>
         <body style="font-family:Arial; text-align:center; margin-top:100px;">
             <h1>Flask Application Running Successfully</h1>
