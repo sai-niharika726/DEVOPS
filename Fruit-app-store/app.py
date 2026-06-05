@@ -8,18 +8,18 @@ CORS(app)
 
 # Fruit inventory with emoji as cartoon representation
 FRUITS = [
-    {"id": 1,  "name": "Sweet-Apple",      "emoji": "🍎", "price": 30,  "unit": "kg",  "stock": 50, "color": "#ff6b6b", "bg": "#fff5f5", "desc": "Crispy & sweet!"},
-    {"id": 2,  "name": "Banana",     "emoji": "🍌", "price": 20,  "unit": "doz", "stock": 40, "color": "#ffd93d", "bg": "#fffdf0", "desc": "Peel good vibes!"},
-    {"id": 3,  "name": "Mangooo",      "emoji": "🥭", "price": 80,  "unit": "kg",  "stock": 30, "color": "#ff9a3c", "bg": "#fff8f0", "desc": "King of fruits!"},
-    {"id": 4,  "name": "Grapes",     "emoji": "🍇", "price": 60,  "unit": "kg",  "stock": 25, "color": "#9b59b6", "bg": "#fdf6ff", "desc": "Bunch of joy!"},
-    {"id": 5,  "name": "Watermelon", "emoji": "🍉", "price": 25,  "unit": "pc",  "stock": 20, "color": "#2ecc71", "bg": "#f0fff4", "desc": "Summer splash!"},
-    {"id": 6,  "name": "Orange",     "emoji": "🍊", "price": 40,  "unit": "kg",  "stock": 35, "color": "#e67e22", "bg": "#fff9f0", "desc": "Vitamin C boost!"},
-    {"id": 7,  "name": "Strawberry", "emoji": "🍓", "price": 120, "unit": "box", "stock": 15, "color": "#e84393", "bg": "#fff5fa", "desc": "Berry delicious!"},
-    {"id": 8,  "name": "Pineapple",  "emoji": "🍍", "price": 50,  "unit": "pc",  "stock": 18, "color": "#f39c12", "bg": "#fffbf0", "desc": "Tropical party!"},
-    {"id": 9,  "name": "Cherry",     "emoji": "🍒", "price": 150, "unit": "box", "stock": 10, "color": "#c0392b", "bg": "#fff5f5", "desc": "Life's a cherry!"},
-    {"id": 10, "name": "Kiwi",       "emoji": "🥝", "price": 90,  "unit": "pc",  "stock": 22, "color": "#27ae60", "bg": "#f0fff8", "desc": "Tiny powerhouse!"},
-    {"id": 11, "name": "Coconut",    "emoji": "🥥", "price": 35,  "unit": "pc",  "stock": 28, "color": "#8b6914", "bg": "#fefcf3", "desc": "Tropical escape!"},
-    {"id": 12, "name": "Lemon",      "emoji": "🍋", "price": 15,  "unit": "pc",  "stock": 60, "color": "#f1c40f", "bg": "#fffef0", "desc": "Squeeze the day!"},
+    {"id": 1,  "name": "Sweet-Apple",      "emoji": "🍎🍎", "price": 30,  "unit": "kg",  "stock": 50, "color": "#ff6b6b", "bg": "#fff5f5", "desc": "Crispy & sweet!"},
+    {"id": 2,  "name": "Banana",     "emoji": "🍌🍌", "price": 20,  "unit": "doz", "stock": 40, "color": "#ffd93d", "bg": "#fffdf0", "desc": "Peel good vibes!"},
+    {"id": 3,  "name": "Mangooo",      "emoji": "🥭🥭", "price": 80,  "unit": "kg",  "stock": 30, "color": "#ff9a3c", "bg": "#fff8f0", "desc": "King of fruits!"},
+    {"id": 4,  "name": "Grapes",     "emoji": "🍇🍇", "price": 60,  "unit": "kg",  "stock": 25, "color": "#9b59b6", "bg": "#fdf6ff", "desc": "Bunch of joy!"},
+    {"id": 5,  "name": "Watermelon", "emoji": "🍉🍇", "price": 25,  "unit": "pc",  "stock": 20, "color": "#2ecc71", "bg": "#f0fff4", "desc": "Summer splash!"},
+    {"id": 6,  "name": "Orange",     "emoji": "🍊🍇", "price": 40,  "unit": "kg",  "stock": 35, "color": "#e67e22", "bg": "#fff9f0", "desc": "Vitamin C boost!"},
+    {"id": 7,  "name": "Strawberry", "emoji": "🍓🍇", "price": 120, "unit": "box", "stock": 15, "color": "#e84393", "bg": "#fff5fa", "desc": "Berry delicious!"},
+    {"id": 8,  "name": "Pineapple",  "emoji": "🍍🍇", "price": 50,  "unit": "pc",  "stock": 18, "color": "#f39c12", "bg": "#fffbf0", "desc": "Tropical party!"},
+    {"id": 9,  "name": "Cherry",     "emoji": "🍒🍇", "price": 150, "unit": "box", "stock": 10, "color": "#c0392b", "bg": "#fff5f5", "desc": "Life's a cherry!"},
+    {"id": 10, "name": "Kiwi",       "emoji": "🥝🍇", "price": 90,  "unit": "pc",  "stock": 22, "color": "#27ae60", "bg": "#f0fff8", "desc": "Tiny powerhouse!"},
+    {"id": 11, "name": "Coconut",    "emoji": "🥥🍇", "price": 35,  "unit": "pc",  "stock": 28, "color": "#8b6914", "bg": "#fefcf3", "desc": "Tropical escape!"},
+    {"id": 12, "name": "Lemon",      "emoji": "🍋🍇", "price": 15,  "unit": "pc",  "stock": 60, "color": "#f1c40f", "bg": "#fffef0", "desc": "Squeeze the day!"},
 ]
 
 HTML_TEMPLATE = """
