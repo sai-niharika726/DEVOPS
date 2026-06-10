@@ -370,7 +370,7 @@ HTML_TEMPLATE = """
 </header>
 
 <div class="hero">
-  <h1>Fresh Fruits,<br>Happy You! 🌈</h1>
+  <h1>Fresh Fruits,<br>From Farm! 🌈</h1>
   <p>Farm-to-door goodness every single day</p>
   <div class="fruit-parade">🍎🍌🥭🍇🍉🍊🍓🍍🍒🥝🥥🍋</div>
 </div>
