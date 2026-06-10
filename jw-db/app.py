@@ -12,6 +12,10 @@ def get_db():
         database=os.environ.get("DB_NAME", "jewellerydb")
     )
 
+@app.route("/")
+def home():
+    return "Jewellery DB App is running! Go to /orders"
+
 @app.route("/orders", methods=["GET"])
 def get_orders():
     db = get_db()
