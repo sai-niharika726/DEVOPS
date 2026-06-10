@@ -8,10 +8,10 @@ CORS(app)
 
 # Fruit inventory with emoji as cartoon representation
 FRUITS = [
-    {"id": 1,  "name": "Sweet-Apple",      "emoji": "🍎🍎", "price": 30,  "unit": "kg",  "stock": 50, "color": "#ff6b6b", "bg": "#fff5f5", "desc": "Crispy & sweet!"},
-    {"id": 2,  "name": "Banana",     "emoji": "🍌🍌", "price": 20,  "unit": "doz", "stock": 40, "color": "#ffd93d", "bg": "#fffdf0", "desc": "Peel good vibes!"},
-    {"id": 3,  "name": "Mangooo",      "emoji": "🥭🥭", "price": 80,  "unit": "kg",  "stock": 30, "color": "#ff9a3c", "bg": "#fff8f0", "desc": "King of fruits!"},
-    {"id": 4,  "name": "Grapes",     "emoji": "🍇🍇", "price": 60,  "unit": "kg",  "stock": 25, "color": "#9b59b6", "bg": "#fdf6ff", "desc": "Bunch of joy!"},
+    {"id": 1,  "name": "Sweet-Apple",    "emoji": "🍎", "price": 30,  "unit": "kg",  "stock": 50, "color": "#ff6b6b", "bg": "#fff5f5", "desc": "Crispy & sweet!"},
+    {"id": 2,  "name": "Banana",     "emoji": "🍌", "price": 20,  "unit": "doz", "stock": 40, "color": "#ffd93d", "bg": "#fffdf0", "desc": "Peel good vibes!"},
+    {"id": 3,  "name": "Mangooo",      "emoji": "🥭", "price": 80,  "unit": "kg",  "stock": 30, "color": "#ff9a3c", "bg": "#fff8f0", "desc": "King of fruits!"},
+    {"id": 4,  "name": "Grapes",     "emoji": "🍇", "price": 60,  "unit": "kg",  "stock": 25, "color": "#9b59b6", "bg": "#fdf6ff", "desc": "Bunch of joy!"},
     {"id": 5,  "name": "Watermelon", "emoji": "🍉🍇", "price": 25,  "unit": "pc",  "stock": 20, "color": "#2ecc71", "bg": "#f0fff4", "desc": "Summer splash!"},
     {"id": 6,  "name": "Orange",     "emoji": "🍊🍇", "price": 40,  "unit": "kg",  "stock": 35, "color": "#e67e22", "bg": "#fff9f0", "desc": "Vitamin C boost!"},
     {"id": 7,  "name": "Strawberry", "emoji": "🍓🍇", "price": 120, "unit": "box", "stock": 15, "color": "#e84393", "bg": "#fff5fa", "desc": "Berry delicious!"},
