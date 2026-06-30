@@ -1,0 +1,42 @@
+pipeline{
+    agent any
+    stages{
+        stage("code"){
+            steps{
+                git "https://github.com/sai-niharika726/DEVOPS.git"
+            }
+        }
+        stage("build"){
+            steps{
+                sh 'docker build -t frontend food-bridge/frontend > frontend-severity'
+                sh 'docker build -t backend food-bridge/backend > backend-severity'
+            }
+        }
+        stage ("Image scan"){
+            steps{
+                sh 'trivy image frontend'
+                sh 'trivy image backend'
+            }
+        }
+        stage("Vulnerabilities"){
+            steps{
+                sh 'trivy image --severity=HIGH,CRITICAL --exit-code=1 frontend'
+                sh 'trivy image --severity=HIGH,CRITICAL --exit-code=1 backend'
+            }
+        }
+        stage ("Tag"){
+            steps{
+                sh 'docker tag frontend bsainiharika/food-bridge:frontend'
+                sh 'docker tag frontend bsainiharika/food-bridge:backend'
+            }
+        }
+        stage (push){
+            steps{
+                withDockerRegistry(credentialsId: 'dockercreds') {
+                    sh 'docker push bsainiharika/food-bridge:backend'
+                    sh 'docker push bsainiharika/food-bridge:frontend'
+                }
+        }
+    }
+}        
+}  
