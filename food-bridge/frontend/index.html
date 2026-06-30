@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FoodBridge</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="brand">🥣 FoodBridge</div>
+  <nav id="nav-links" class="nav-links">
+    <button data-view="browse" class="nav-btn active">Browse donations</button>
+    <button data-view="post" class="nav-btn donor-only" hidden>Post donation</button>
+    <button data-view="claims" class="nav-btn volunteer-only" hidden>My claims</button>
+  </nav>
+  <div id="auth-area" class="auth-area">
+    <button id="login-btn" class="btn-ghost">Log in</button>
+    <button id="register-btn" class="btn-primary">Sign up</button>
+  </div>
+  <div id="user-area" class="auth-area" hidden>
+    <span id="user-name"></span>
+    <button id="logout-btn" class="btn-ghost">Log out</button>
+  </div>
+</header>
+
+<main id="app">
+
+  <section id="stats-bar" class="stats-bar"></section>
+
+  <section id="view-browse" class="view">
+    <h2>Available near you</h2>
+    <div id="donations-list" class="cards-grid"></div>
+  </section>
+
+  <section id="view-post" class="view" hidden>
+    <h2>Post a donation</h2>
+    <form id="post-form" class="form-card">
+      <label>Title<input type="text" id="title" required placeholder="e.g. Fresh bakery surplus" /></label>
+      <label>Description<textarea id="description" placeholder="Any details volunteers should know"></textarea></label>
+      <label>Quantity<input type="text" id="quantity" required placeholder="Serves 25 / 18 trays" /></label>
+      <label>Food type
+        <select id="food_type">
+          <option value="veg">Veg</option>
+          <option value="non_veg">Non-veg</option>
+          <option value="mixed">Mixed</option>
+        </select>
+      </label>
+      <label>Pickup location<input type="text" id="pickup_location" required placeholder="Address / area" /></label>
+      <label>Pickup deadline<input type="datetime-local" id="pickup_deadline" required /></label>
+      <button type="submit" class="btn-primary">Post listing</button>
+      <p id="post-message" class="message"></p>
+    </form>
+  </section>
+
+  <section id="view-claims" class="view" hidden>
+    <h2>My claims</h2>
+    <div id="claims-list" class="cards-grid"></div>
+  </section>
+
+</main>
+
+<div id="auth-modal" class="modal" hidden>
+  <div class="modal-box">
+    <button id="close-modal" class="close-btn">&times;</button>
+    <div class="tabs">
+      <button id="tab-login" class="tab active">Log in</button>
+      <button id="tab-register" class="tab">Sign up</button>
+    </div>
+
+    <form id="login-form" class="form-card">
+      <label>Email<input type="email" id="login-email" required /></label>
+      <label>Password<input type="password" id="login-password" required /></label>
+      <button type="submit" class="btn-primary">Log in</button>
+      <p id="login-message" class="message"></p>
+    </form>
+
+    <form id="register-form" class="form-card" hidden>
+      <label>Name<input type="text" id="reg-name" required /></label>
+      <label>Email<input type="email" id="reg-email" required /></label>
+      <label>Password<input type="password" id="reg-password" required /></label>
+      <label>I am a
+        <select id="reg-role">
+          <option value="donor">Donor (restaurant, household, event)</option>
+          <option value="volunteer">Volunteer / shelter</option>
+        </select>
+      </label>
+      <label>Organization (optional)<input type="text" id="reg-org" /></label>
+      <button type="submit" class="btn-primary">Create account</button>
+      <p id="register-message" class="message"></p>
+    </form>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
