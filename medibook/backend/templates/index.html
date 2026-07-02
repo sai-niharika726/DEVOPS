@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MediBook</title>
+<link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="brand">🏥 MediBook</div>
+  <nav class="nav-links">
+    <button data-view="browse" class="nav-btn active">Find doctors</button>
+    <button data-view="appointments" class="nav-btn" id="nav-appointments" hidden>My appointments</button>
+    <button data-view="add-doctor" class="nav-btn" id="nav-add-doctor" hidden>Add profile</button>
+  </nav>
+  <div id="auth-area" class="auth-area">
+    <button id="login-btn" class="btn-ghost">Log in</button>
+    <button id="register-btn" class="btn-primary">Sign up</button>
+  </div>
+  <div id="user-area" class="auth-area" hidden>
+    <span id="user-name"></span>
+    <button id="logout-btn" class="btn-ghost">Log out</button>
+  </div>
+</header>
+
+<main id="app">
+
+  <section id="stats-bar" class="stats-bar"></section>
+
+  <section id="view-browse" class="view">
+    <div class="view-header">
+      <h2>Available doctors</h2>
+      <select id="speciality-filter">
+        <option value="">All specialities</option>
+      </select>
+    </div>
+    <div id="doctors-list" class="cards-grid"></div>
+  </section>
+
+  <section id="view-appointments" class="view" hidden>
+    <h2>My appointments</h2>
+    <div id="appointments-list" class="cards-grid"></div>
+  </section>
+
+  <section id="view-add-doctor" class="view" hidden>
+    <h2>Create doctor profile</h2>
+    <form id="doctor-form" class="form-card">
+      <label>Speciality<input type="text" id="d-speciality" required placeholder="e.g. Cardiology" /></label>
+      <label>Experience (years)<input type="number" id="d-exp" required min="0" /></label>
+      <label>Bio<textarea id="d-bio" placeholder="Brief description of your practice"></textarea></label>
+      <button type="submit" class="btn-primary">Create profile</button>
+      <p id="doctor-msg" class="message"></p>
+    </form>
+  </section>
+
+</main>
+
+<!-- Slot booking modal -->
+<div id="slot-modal" class="modal" hidden>
+  <div class="modal-box">
+    <button id="close-slot-modal" class="close-btn">&times;</button>
+    <h3 id="slot-modal-title">Book appointment</h3>
+    <div id="slots-list" style="margin:12px 0;"></div>
+    <label style="font-size:13px;">Reason for visit</label>
+    <input type="text" id="slot-reason" placeholder="e.g. routine checkup" style="width:100%;margin:6px 0 12px;" />
+    <button id="confirm-booking-btn" class="btn-primary" style="width:100%;">Confirm booking</button>
+    <p id="slot-msg" class="message"></p>
+  </div>
+</div>
+
+<!-- Auth modal -->
+<div id="auth-modal" class="modal" hidden>
+  <div class="modal-box">
+    <button id="close-modal" class="close-btn">&times;</button>
+    <div class="tabs">
+      <button id="tab-login" class="tab active">Log in</button>
+      <button id="tab-register" class="tab">Sign up</button>
+    </div>
+
+    <form id="login-form" class="form-card">
+      <label>Email<input type="email" id="login-email" required /></label>
+      <label>Password<input type="password" id="login-password" required /></label>
+      <button type="submit" class="btn-primary">Log in</button>
+      <p id="login-msg" class="message"></p>
+    </form>
+
+    <form id="register-form" class="form-card" hidden>
+      <label>Name<input type="text" id="reg-name" required /></label>
+      <label>Email<input type="email" id="reg-email" required /></label>
+      <label>Password<input type="password" id="reg-password" required /></label>
+      <label>I am a
+        <select id="reg-role">
+          <option value="patient">Patient</option>
+          <option value="doctor">Doctor</option>
+        </select>
+      </label>
+      <button type="submit" class="btn-primary">Create account</button>
+      <p id="register-msg" class="message"></p>
+    </form>
+  </div>
+</div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
