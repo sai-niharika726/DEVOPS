@@ -14,6 +14,7 @@
     <button data-view="browse" class="nav-btn active">Find doctors</button>
     <button data-view="appointments" class="nav-btn" id="nav-appointments" hidden>My appointments</button>
     <button data-view="add-doctor" class="nav-btn" id="nav-add-doctor" hidden>Add profile</button>
+    <button data-view="add-slot" class="nav-btn" id="nav-add-slot" hidden>Add slot</button>
   </nav>
   <div id="auth-area" class="auth-area">
     <button id="login-btn" class="btn-ghost">Log in</button>
@@ -52,6 +53,32 @@
       <label>Bio<textarea id="d-bio" placeholder="Brief description of your practice"></textarea></label>
       <button type="submit" class="btn-primary">Create profile</button>
       <p id="doctor-msg" class="message"></p>
+    </form>
+  </section>
+
+  <section id="view-add-slot" class="view" hidden>
+    <h2>Add appointment slot</h2>
+    <form id="slot-form" class="form-card">
+      <label>Select doctor
+        <select id="slot-doctor-id"></select>
+      </label>
+      <label>Date
+        <input type="date" id="slot-date" required />
+      </label>
+      <label>Time
+        <select id="slot-time">
+          <option>09:00</option>
+          <option>10:00</option>
+          <option>11:00</option>
+          <option>12:00</option>
+          <option>14:00</option>
+          <option>15:00</option>
+          <option>16:00</option>
+          <option>17:00</option>
+        </select>
+      </label>
+      <button type="submit" class="btn-primary">Add slot</button>
+      <p id="slot-form-msg" class="message"></p>
     </form>
   </section>
 
