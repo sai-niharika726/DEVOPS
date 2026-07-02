@@ -38,6 +38,7 @@ function renderAuthState() {
 
   document.getElementById("nav-appointments").hidden = !(loggedIn && state.user.role === "patient");
   document.getElementById("nav-add-doctor").hidden = !(loggedIn && state.user.role === "doctor");
+  document.getElementById("nav-add-slot").hidden = !(loggedIn && state.user.role === "doctor");
 }
 
 function showView(view) {
@@ -46,6 +47,7 @@ function showView(view) {
   document.querySelectorAll(".nav-btn").forEach(b => b.classList.toggle("active", b.dataset.view === view));
   if (view === "browse") { loadStats(); loadDoctors(); }
   if (view === "appointments") loadAppointments();
+  if (view === "add-slot") loadDoctorSelect();
 }
 
 document.querySelector(".nav-links").addEventListener("click", e => {
@@ -231,6 +233,38 @@ document.getElementById("register-form").addEventListener("submit", async e => {
 });
 
 document.getElementById("logout-btn").addEventListener("click", () => { clearSession(); showView("browse"); });
+
+async function loadDoctorSelect() {
+  try {
+    const doctors = await api("/api/doctors");
+    const sel = document.getElementById("slot-doctor-id");
+    sel.innerHTML = doctors.map(d =>
+      `<option value="${d.id}">${d.name} — ${d.speciality}</option>`
+    ).join("");
+  } catch(e) { console.error(e); }
+}
+
+document.getElementById("slot-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const msg = document.getElementById("slot-form-msg");
+  try {
+    const doctorId = document.getElementById("slot-doctor-id").value;
+    await api(`/api/doctors/${doctorId}/slots`, {
+      method: "POST",
+      auth: true,
+      body: {
+        slot_date: document.getElementById("slot-date").value,
+        slot_time: document.getElementById("slot-time").value,
+      },
+    });
+    msg.style.color = "#27500a";
+    msg.textContent = "Slot added successfully!";
+    e.target.reset();
+  } catch(e) {
+    msg.style.color = "#993c1d";
+    msg.textContent = e.message;
+  }
+});
 
 renderAuthState();
 loadStats();
