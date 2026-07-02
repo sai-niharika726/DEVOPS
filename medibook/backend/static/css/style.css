@@ -1,0 +1,98 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #f6f5f0; color: #2c2c2a; }
+
+.navbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px; background: #fff; border-bottom: 1px solid #e3e1d8;
+}
+.brand { font-weight: 600; font-size: 18px; }
+.nav-links { display: flex; gap: 18px; }
+.nav-btn {
+  background: none; border: none; font-size: 14px; cursor: pointer;
+  color: #5f5e5a; padding: 6px 4px;
+}
+.nav-btn.active { color: #185fa5; font-weight: 600; border-bottom: 2px solid #185fa5; }
+.auth-area { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+.btn-primary {
+  background: #185fa5; color: #fff; border: none; padding: 8px 16px;
+  border-radius: 8px; cursor: pointer; font-size: 14px;
+}
+.btn-primary:hover { background: #0c447c; }
+.btn-ghost {
+  background: none; border: 1px solid #ccc; padding: 8px 14px;
+  border-radius: 8px; cursor: pointer; font-size: 14px;
+}
+
+main { max-width: 1000px; margin: 0 auto; padding: 24px; }
+
+.stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+.stat-card { background: #fff; border-radius: 12px; padding: 14px 16px; border: 1px solid #e3e1d8; }
+.stat-card .label { font-size: 12px; color: #888780; }
+.stat-card .value { font-size: 22px; font-weight: 600; margin-top: 4px; }
+
+.view-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.view-header h2 { font-size: 18px; font-weight: 500; }
+.view-header select { font-size: 13px; padding: 6px 10px; border-radius: 8px; border: 1px solid #ccc; }
+
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+
+.doctor-card {
+  background: #fff; border: 1px solid #e3e1d8; border-radius: 12px; padding: 16px;
+}
+.doctor-card .avatar {
+  width: 44px; height: 44px; border-radius: 50%; background: #e6f1fb;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 500; font-size: 14px; color: #185fa5; margin-bottom: 10px;
+}
+.doctor-card h3 { font-size: 15px; font-weight: 500; }
+.doctor-card p { font-size: 13px; color: #5f5e5a; margin-top: 4px; }
+.badge {
+  display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 6px;
+  background: #eaf3de; color: #27500a; margin: 8px 0;
+}
+.badge.unavailable { background: #faeeda; color: #633806; }
+
+.appt-card {
+  background: #fff; border: 1px solid #e3e1d8; border-radius: 12px; padding: 16px;
+}
+.appt-card h3 { font-size: 15px; font-weight: 500; }
+.appt-card p { font-size: 13px; color: #5f5e5a; margin-top: 4px; }
+.status-badge {
+  display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 6px; margin-top: 8px;
+}
+.status-booked { background: #e6f1fb; color: #0c447c; }
+.status-completed { background: #eaf3de; color: #27500a; }
+.status-cancelled { background: #fcebeb; color: #791f1f; }
+
+.view h2 { font-size: 18px; font-weight: 500; margin-bottom: 14px; }
+.view[hidden] { display: none; }
+
+.form-card { display: flex; flex-direction: column; gap: 12px; max-width: 420px; }
+.form-card label { font-size: 13px; color: #5f5e5a; display: flex; flex-direction: column; gap: 4px; }
+.form-card input, .form-card select, .form-card textarea {
+  padding: 8px 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; font-family: inherit;
+}
+.message { font-size: 13px; color: #993c1d; min-height: 16px; margin-top: 4px; }
+
+.modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+  display: flex; align-items: center; justify-content: center; z-index: 100;
+}
+.modal[hidden] { display: none; }
+.modal-box {
+  background: #fff; border-radius: 12px; padding: 24px; width: 380px;
+  position: relative; max-height: 90vh; overflow-y: auto;
+}
+.modal-box h3 { font-size: 16px; font-weight: 500; margin-bottom: 8px; }
+.close-btn { position: absolute; top: 10px; right: 14px; border: none; background: none; font-size: 20px; cursor: pointer; }
+
+.tabs { display: flex; gap: 16px; margin-bottom: 16px; }
+.tab { background: none; border: none; font-size: 14px; cursor: pointer; padding-bottom: 6px; color: #888780; }
+.tab.active { color: #185fa5; font-weight: 600; border-bottom: 2px solid #185fa5; }
+
+.slot-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px; border: 1px solid #e3e1d8; border-radius: 8px; margin-bottom: 6px;
+}
+.slot-item span { font-size: 13px; }
+.slot-item button { font-size: 12px; padding: 4px 10px; }
