@@ -38,6 +38,22 @@ def my_appointments():
     return jsonify([a.to_dict() for a in appointments]), 200
 
 
+@appointments_bp.route("/doctor", methods=["GET"])
+@jwt_required()
+def doctor_appointments():
+    claims = get_jwt()
+    if claims.get("role") not in ("doctor", "admin"):
+        return jsonify({"error": "only doctors can view their appointments"}), 403
+
+    user_id = int(get_jwt_identity())
+    doctor = Doctor.query.filter_by(user_id=user_id).first()
+    if not doctor:
+        return jsonify({"error": "doctor profile not found"}), 404
+
+    appointments = Appointment.query.filter_by(doctor_id=doctor.id).all()
+    return jsonify([a.to_dict() for a in appointments]), 200
+
+
 @appointments_bp.route("/<int:appointment_id>/cancel", methods=["PATCH"])
 @jwt_required()
 def cancel(appointment_id):

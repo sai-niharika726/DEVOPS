@@ -12,6 +12,7 @@ class User(db.Model):
     email = db.Column(db.String(160), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(20), nullable=False)  # patient | doctor | admin
+    phone = db.Column(db.String(20), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def set_password(self, password):
@@ -21,7 +22,7 @@ class User(db.Model):
         return check_password_hash(self.password_hash, password)
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name, "email": self.email, "role": self.role}
+        return {"id": self.id, "name": self.name, "email": self.email, "role": self.role, "phone": self.phone}
 
 
 class Doctor(db.Model):
@@ -52,7 +53,7 @@ class Slot(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     doctor_id = db.Column(db.Integer, db.ForeignKey("doctors.id"), nullable=False)
     slot_date = db.Column(db.Date, nullable=False)
-    slot_time = db.Column(db.String(10), nullable=False)  # e.g. "09:00"
+    slot_time = db.Column(db.String(10), nullable=False)
     is_booked = db.Column(db.Boolean, default=False)
 
     def to_dict(self):
@@ -72,7 +73,7 @@ class Appointment(db.Model):
     doctor_id = db.Column(db.Integer, db.ForeignKey("doctors.id"), nullable=False)
     slot_id = db.Column(db.Integer, db.ForeignKey("slots.id"), nullable=False, unique=True)
     reason = db.Column(db.String(300), nullable=True)
-    status = db.Column(db.String(20), default="booked")  # booked | completed | cancelled
+    status = db.Column(db.String(20), default="booked")
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     patient = db.relationship("User", foreign_keys=[patient_id])
@@ -83,6 +84,8 @@ class Appointment(db.Model):
         return {
             "id": self.id,
             "patient": self.patient.name,
+            "patient_email": self.patient.email,
+            "patient_phone": self.patient.phone or "N/A",
             "doctor": self.doctor.user.name,
             "speciality": self.doctor.speciality,
             "slot_date": self.slot.slot_date.isoformat(),
