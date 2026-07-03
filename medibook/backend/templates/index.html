@@ -265,14 +265,14 @@
     <form id="register-form" class="form-card" hidden>
       <label>Name<input type="text" id="reg-name" required /></label>
       <label>Email<input type="email" id="reg-email" required /></label>
-      <label>Phone<input type="tel" id="reg-phone" placeholder="+91 9876543210" /></label>
       <label>Password<input type="password" id="reg-password" required /></label>
       <label>I am a
-        <select id="reg-role">
+        <select id="reg-role" onchange="togglePhone(this.value)">
           <option value="patient">Patient</option>
           <option value="doctor">Doctor</option>
         </select>
       </label>
+      <label id="phone-field">Phone<input type="tel" id="reg-phone" placeholder="+91 9876543210" /></label>
       <button type="submit" class="btn-primary">Create account</button>
       <p id="register-msg" class="message"></p>
     </form>

@@ -305,5 +305,11 @@ document.getElementById("register-form").addEventListener("submit", async e => {
 
 document.getElementById("logout-btn").addEventListener("click", () => { clearSession(); showView("home"); });
 
+
+function togglePhone(role) {
+  const phoneField = document.getElementById('phone-field');
+  phoneField.hidden = role === 'doctor';
+}
+
 renderAuthState();
 loadHeroStats();
