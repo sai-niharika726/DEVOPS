@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, render_template
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-
+from prometheus_flask_exporter import PrometheusMetrics
 from config import Config
 from models import db
 from routes.auth import auth_bp
@@ -12,10 +12,13 @@ from routes.appointments import appointments_bp
 def create_app():
     app = Flask(__name__, template_folder="templates", static_folder="static")
     app.config.from_object(Config)
-
     CORS(app)
     db.init_app(app)
     JWTManager(app)
+
+    # Prometheus metrics - automatically exposes /metrics endpoint
+    metrics = PrometheusMetrics(app)
+    metrics.info("medibook_app_info", "MediBook application info", version="1.0.0")
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(doctors_bp)
